@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 
 /*
@@ -17,4 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/test', [\App\Http\Controllers\TestController::class, 'index'])->name('test.index');
+Route::get('/test', [TestController::class, 'index'])->name('test.index');
+
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+
+Route::group(['middleware' => 'auth:sanctum'], function() {
+    Route::get('logout', [AuthController::class, 'logout']);
+});
